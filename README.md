@@ -1,2 +1,2 @@
-# glowstone
+# Glowstone
 Light up your server
