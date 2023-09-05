@@ -1,8 +1,15 @@
 package dev.xernas.glowstone.io.util;
 
+import dev.xernas.glowstone.io.models.GameProfile;
+import dev.xernas.glowstone.io.models.Property;
+import dev.xernas.glowstone.utils.GlowstoneLogger;
 import io.netty.buffer.ByteBuf;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class MCByteBuf{
 
@@ -88,6 +95,67 @@ public class MCByteBuf{
 
     public String readUTF() {
         return readUTF(32767);
+    }
+
+    public void writeUUID(UUID uuid) {
+        byteBuf.writeLong(uuid.getMostSignificantBits());
+        byteBuf.writeLong(uuid.getLeastSignificantBits());
+    }
+
+    public UUID readUUID() {
+        return new UUID(byteBuf.readLong(), byteBuf.readLong());
+    }
+
+    public void writeProperty(Property property) {
+        writeUTF(property.getName());
+        writeUTF(property.getValue());
+        byteBuf.writeBoolean(property.isHasSignature());
+        if (property.isHasSignature()) {
+            writeUTF(property.getSignature());
+        }
+    }
+
+    public Property readProperty() {
+        String name = readUTF();
+        String value = readUTF();
+        boolean hasSign = byteBuf.readBoolean();
+        if (hasSign) {
+            return new Property(name, value, readUTF());
+        }
+        else {
+            return new Property(name, value);
+        }
+    }
+
+    public void writePropertyArray(List<Property> properties) {
+        writeVarInt(properties.size());
+        for (int i = 0; i < properties.size(); i++) {
+            writeProperty(properties.get(i));
+        }
+    }
+
+    public List<Property> readPropertyArray() {
+        List<Property> properties = new ArrayList<>();
+        int size = readVarInt();
+        for (int i = 0; i < size; i++) {
+            properties.add(readProperty());
+        }
+        return properties;
+    }
+
+    public void writeGameProfile(GameProfile profile) {
+        writeUUID(profile.getUuid());
+        writeUTF(profile.getUsername());
+        writePropertyArray(profile.getProperties());
+    }
+
+    public GameProfile readGameProfile() {
+        UUID uuid = readUUID();
+        String username = readUTF();
+        List<Property> properties = readPropertyArray();
+        GameProfile gameProfile = new GameProfile(uuid, username);
+        gameProfile.setProperties(properties);
+        return gameProfile;
     }
 
 }

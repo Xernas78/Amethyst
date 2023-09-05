@@ -21,7 +21,6 @@ public class GlowstoneServer implements Runnable {
 
     @Override
     public void run() {
-        GlowstoneLogger logger = new GlowstoneLogger();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workGroup = new NioEventLoopGroup();
 
@@ -38,7 +37,7 @@ public class GlowstoneServer implements Runnable {
                     });
 
             PacketRegistry.setup();
-            logger.info("Listening on port: " + ServerConstants.port);
+            GlowstoneLogger.info("Listening on port: " + ServerConstants.port);
             ChannelFuture future = server.bind(ServerConstants.port).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {

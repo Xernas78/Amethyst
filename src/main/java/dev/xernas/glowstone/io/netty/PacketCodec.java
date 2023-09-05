@@ -7,6 +7,7 @@ import dev.xernas.glowstone.io.protocol.packets.status.StatusPacket;
 import dev.xernas.glowstone.io.util.MCByteBuf;
 import dev.xernas.glowstone.io.util.State;
 import dev.xernas.glowstone.io.util.StateManager;
+import dev.xernas.glowstone.utils.GlowstoneLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,7 +29,8 @@ public class PacketCodec extends ByteToMessageCodec<IPacket> {
             mcByteBuf.writeVarInt(bytes.length);
             mcByteBuf.getByteBuf().writeBytes(bytes);
         } catch (NullPointerException ex) {
-
+            GlowstoneLogger.warn("Une erreur est survenue avec le packet " + iPacket.getClass().getSimpleName());
+            ex.printStackTrace();
         }
 
     }

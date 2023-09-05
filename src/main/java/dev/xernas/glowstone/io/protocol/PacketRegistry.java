@@ -1,6 +1,8 @@
 package dev.xernas.glowstone.io.protocol;
 
 import dev.xernas.glowstone.io.protocol.packets.handshake.HandshakePacket;
+import dev.xernas.glowstone.io.protocol.packets.login.LoginStartPacket;
+import dev.xernas.glowstone.io.protocol.packets.login.LoginSuccessPacket;
 import dev.xernas.glowstone.io.protocol.packets.status.PingPongPacket;
 import dev.xernas.glowstone.io.protocol.packets.status.StatusPacket;
 import dev.xernas.glowstone.io.util.State;
@@ -20,6 +22,8 @@ public class PacketRegistry {
         registerPacket(State.HANDSHAKE, 0x00, new HandshakePacket());
         registerPacket(State.STATUS, 0x00, new StatusPacket());
         registerPacket(State.STATUS, 0x01, new PingPongPacket());
+        registerPacket(State.LOGIN, 0x00, new LoginStartPacket());
+        registerPacket(State.LOGIN, 0x02, new LoginSuccessPacket());
         PACKET_MAP.put(State.HANDSHAKE, HANDSHAKE_MAP);
         PACKET_MAP.put(State.STATUS, STATUS_MAP);
         PACKET_MAP.put(State.LOGIN, LOGIN_MAP);
@@ -40,12 +44,13 @@ public class PacketRegistry {
 
     public static Integer getId(State state, IPacket packet) throws NullPointerException{
         Map<Integer, IPacket> stateMap = PACKET_MAP.get(state);
-        for (int i = 0; i < stateMap.size(); i++) {
-            if (stateMap.get(i).getClass().getSimpleName().equals(packet.getClass().getSimpleName())) {
-                return i;
+        AtomicReference<Integer> finalId = new AtomicReference<>();
+        stateMap.forEach((id, ipacket) -> {
+            if (ipacket.getClass().getSimpleName().equals(packet.getClass().getSimpleName())) {
+                finalId.set(id);
             }
-        }
-        return null;
+        });
+        return finalId.get();
     }
 
 
