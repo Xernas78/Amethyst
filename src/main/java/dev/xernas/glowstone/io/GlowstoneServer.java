@@ -5,6 +5,7 @@ import dev.xernas.glowstone.io.models.ServerInfoResponse;
 import dev.xernas.glowstone.io.netty.PacketCodec;
 import dev.xernas.glowstone.io.netty.PacketInHandler;
 import dev.xernas.glowstone.io.protocol.PacketRegistry;
+import dev.xernas.glowstone.utils.GlowstoneLogger;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -20,6 +21,7 @@ public class GlowstoneServer implements Runnable {
 
     @Override
     public void run() {
+        GlowstoneLogger logger = new GlowstoneLogger();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workGroup = new NioEventLoopGroup();
 
@@ -36,6 +38,7 @@ public class GlowstoneServer implements Runnable {
                     });
 
             PacketRegistry.setup();
+            logger.info("Listening on port: " + ServerConstants.port);
             ChannelFuture future = server.bind(ServerConstants.port).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
