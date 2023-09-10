@@ -10,32 +10,36 @@ public class ChatComponent {
     private String color;
     private List<ChatComponent> extra;
 
-    public void setBold(boolean bold) {
+    public ChatComponent setBold(boolean bold) {
         this.bold = bold;
+        return this;
     }
 
     public boolean getBold() {
         return bold;
     }
 
-    public void setItalic(boolean italic) {
+    public ChatComponent setItalic(boolean italic) {
         this.italic = italic;
+        return this;
     }
 
     public boolean getItalic() {
         return italic;
     }
 
-    public void setUnderlined(boolean underlined) {
+    public ChatComponent setUnderlined(boolean underlined) {
         this.underlined = underlined;
+        return this;
     }
 
     public boolean getUnderlined() {
         return underlined;
     }
 
-    public void setColor(String color) {
+    public ChatComponent setColor(String color) {
         this.color = color;
+        return this;
     }
 
     public String getColor() {

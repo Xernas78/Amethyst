@@ -1,9 +1,7 @@
 package dev.xernas.amethyst.io.protocol;
 
 import dev.xernas.amethyst.io.protocol.packets.handshake.HandshakePacket;
-import dev.xernas.amethyst.io.protocol.packets.login.LoginDisconnectPacket;
-import dev.xernas.amethyst.io.protocol.packets.login.LoginStartPacket;
-import dev.xernas.amethyst.io.protocol.packets.login.LoginSuccessPacket;
+import dev.xernas.amethyst.io.protocol.packets.login.*;
 import dev.xernas.amethyst.io.protocol.packets.status.PingPongPacket;
 import dev.xernas.amethyst.io.protocol.packets.status.StatusPacket;
 import dev.xernas.amethyst.io.util.Direction;
@@ -24,6 +22,7 @@ public class PacketRegistry {
         registerPacket(State.STATUS, Direction.ALL, 0x00, new StatusPacket());
         registerPacket(State.STATUS, Direction.ALL, 0x01, new PingPongPacket());
         registerPacket(State.LOGIN, Direction.SERVERBOUND, 0x00, new LoginStartPacket());
+        registerPacket(State.LOGIN, Direction.ALL, 0x01, new EncryptionPacket());
         registerPacket(State.LOGIN, Direction.CLIENTBOUND, 0x02, new LoginSuccessPacket());
         registerPacket(State.LOGIN, Direction.CLIENTBOUND, 0x00, new LoginDisconnectPacket());
         PACKET_MAP.put(State.HANDSHAKE, HANDSHAKE_MAP);

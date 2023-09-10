@@ -156,4 +156,14 @@ public class MCByteBuf{
         return gameProfile;
     }
 
+    public void writeByteArray(byte[] bytes) {
+        byteBuf.writeBytes(bytes);
+    }
+
+    public byte[] readByteArray() {
+        byte[] bytes = new byte[readVarInt()];
+        byteBuf.readBytes(bytes);
+        return bytes;
+    }
+
 }

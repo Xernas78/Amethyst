@@ -14,13 +14,13 @@ import java.util.Map;
 
 public class LoginDisconnectPacket implements IPacket {
 
-    private TextChatComponent chatComponent;
+    private ChatComponent chatComponent;
 
     public LoginDisconnectPacket() {
 
     }
 
-    public LoginDisconnectPacket(TextChatComponent chatComponent) {
+    public LoginDisconnectPacket(ChatComponent chatComponent) {
         this.chatComponent = chatComponent;
     }
 

@@ -1,9 +1,11 @@
 package dev.xernas.amethyst.io;
 
 import dev.xernas.amethyst.ServerConstants;
+import dev.xernas.amethyst.io.models.GameProfile;
 import dev.xernas.amethyst.io.netty.PacketCodec;
 import dev.xernas.amethyst.io.netty.PacketInHandler;
 import dev.xernas.amethyst.io.protocol.PacketRegistry;
+import dev.xernas.amethyst.io.util.EncryptionGenerator;
 import dev.xernas.amethyst.logging.AmethystConsole;
 import dev.xernas.amethyst.logging.AmethystFormatter;
 import io.netty.bootstrap.ServerBootstrap;
@@ -21,6 +23,8 @@ import java.util.logging.*;
 public class AmethystServer implements Runnable {
 
     private static final Logger logger = Logger.getLogger("Amethyst");
+    private static final EncryptionGenerator generator = new EncryptionGenerator();;
+    private static GameProfile gameProfile;
 
     public AmethystServer() throws IOException {
         logger.setLevel(Level.INFO);
@@ -64,5 +68,17 @@ public class AmethystServer implements Runnable {
 
     public static Logger getLogger() {
         return logger;
+    }
+
+    public static EncryptionGenerator getGenerator() {
+        return generator;
+    }
+
+    public static void setGameProfile(GameProfile gameProfile) {
+        AmethystServer.gameProfile = gameProfile;
+    }
+
+    public static GameProfile getGameProfile() {
+        return gameProfile;
     }
 }

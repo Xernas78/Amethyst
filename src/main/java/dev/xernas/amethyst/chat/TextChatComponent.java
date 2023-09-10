@@ -8,8 +8,9 @@ public class TextChatComponent extends ChatComponent{
         this.text = text;
     }
 
-    public void setText(String text) {
+    public TextChatComponent setText(String text) {
         this.text = text;
+        return this;
     }
 
     public String getText() {

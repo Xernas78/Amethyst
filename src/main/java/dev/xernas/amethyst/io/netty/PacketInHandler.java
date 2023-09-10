@@ -22,7 +22,7 @@ public class PacketInHandler extends SimpleChannelInboundHandler<IPacket> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-
+        cause.printStackTrace();
     }
 
     public static StateManager getStateManager() {
