@@ -1,5 +1,6 @@
 package dev.xernas.glowstone.io.protocol.packets.login;
 
+import dev.xernas.glowstone.chat.TextChatComponent;
 import dev.xernas.glowstone.io.models.GameProfile;
 import dev.xernas.glowstone.io.protocol.IPacket;
 import dev.xernas.glowstone.io.util.MCByteBuf;
@@ -40,7 +41,8 @@ public class LoginStartPacket implements IPacket {
             uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(StandardCharsets.UTF_8));
         }
 
-        ctx.writeAndFlush(new LoginSuccessPacket(new GameProfile(uuid, username)));
-        stateManager.changeState(State.PLAY);
+        ctx.writeAndFlush(new LoginDisconnectPacket(new TextChatComponent("HEHHE")));
+        //ctx.writeAndFlush(new LoginSuccessPacket(new GameProfile(uuid, username)));
+        //stateManager.changeState(State.PLAY);
     }
 }

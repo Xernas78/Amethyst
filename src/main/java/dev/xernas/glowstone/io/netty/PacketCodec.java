@@ -4,6 +4,7 @@ import dev.xernas.glowstone.io.protocol.IPacket;
 import dev.xernas.glowstone.io.protocol.PacketRegistry;
 import dev.xernas.glowstone.io.protocol.packets.handshake.HandshakePacket;
 import dev.xernas.glowstone.io.protocol.packets.status.StatusPacket;
+import dev.xernas.glowstone.io.util.Direction;
 import dev.xernas.glowstone.io.util.MCByteBuf;
 import dev.xernas.glowstone.io.util.State;
 import dev.xernas.glowstone.io.util.StateManager;
@@ -22,7 +23,7 @@ public class PacketCodec extends ByteToMessageCodec<IPacket> {
         MCByteBuf mcByteBuf = new MCByteBuf(byteBuf);
         MCByteBuf temp = new MCByteBuf(Unpooled.buffer());
         try {
-            temp.writeVarInt(PacketRegistry.getId(PacketInHandler.getStateManager().getCurrentState(), iPacket));
+            temp.writeVarInt(PacketRegistry.getId(PacketInHandler.getStateManager().getCurrentState(), Direction.CLIENTBOUND, iPacket));
             iPacket.write(temp);
             byte[] bytes = new byte[temp.getByteBuf().readableBytes()];
             temp.getByteBuf().readBytes(bytes);
@@ -43,7 +44,7 @@ public class PacketCodec extends ByteToMessageCodec<IPacket> {
         int id = mcByteBuf.readVarInt();
 
         try {
-            IPacket packet = PacketRegistry.getPacket(stateManager.getCurrentState(), id);
+            IPacket packet = PacketRegistry.getPacket(stateManager.getCurrentState(), id, Direction.SERVERBOUND);
             packet.handle(new MCByteBuf(byteBuf), stateManager, PacketInHandler.getReadCtx());
             list.add(packet);
         } catch (NullPointerException e) {
