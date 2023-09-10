@@ -1,2 +1,2 @@
-# Glowstone
+# Amethyst
 Light up your server

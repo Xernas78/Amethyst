@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.xernas</groupId>
-    <artifactId>Glowstone</artifactId>
+    <artifactId>Amethyst</artifactId>
     <version>1.0.0-</version>
 
     <properties>
@@ -63,7 +63,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        dev.xernas.glowstone.Main
+                                        dev.xernas.amethyst.Main
                                     </mainClass>
                                 </manifest>
                             </archive>
