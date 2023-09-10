@@ -1,19 +1,20 @@
 package dev.xernas.amethyst;
 
 import dev.xernas.amethyst.io.AmethystServer;
-import org.apache.commons.lang3.SystemUtils;
-import org.fusesource.jansi.AnsiConsole;
+
+import java.io.IOException;
 
 public class AmethystLauncher {
 
     public static void main(String[] args) {
-        if (SystemUtils.IS_OS_WINDOWS) {
-            AnsiConsole.systemInstall();
+        try {
+            AmethystServer server = new AmethystServer();
+            Thread serverThread = new Thread(server, "Amethyst-Server");
+            serverThread.start();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
-        AmethystServer server = new AmethystServer();
-        Thread serverThread = new Thread(server, "Amethyst-Server");
-        serverThread.start();
     }
 
 }
