@@ -2,7 +2,9 @@ package dev.xernas.amethyst.io.protocol.packets.login;
 
 import com.google.gson.Gson;
 import dev.xernas.amethyst.chat.ChatComponent;
+import dev.xernas.amethyst.chat.ChatComponentSerializer;
 import dev.xernas.amethyst.chat.TextChatComponent;
+import dev.xernas.amethyst.io.AmethystServer;
 import dev.xernas.amethyst.io.protocol.IPacket;
 import dev.xernas.amethyst.io.util.MCByteBuf;
 import dev.xernas.amethyst.io.util.StateManager;
@@ -29,7 +31,7 @@ public class LoginDisconnectPacket implements IPacket {
 
     @Override
     public void write(MCByteBuf byteBuf) {
-        byteBuf.writeUTF(new Gson().toJson(chatComponent, ChatComponent.class));
+        byteBuf.writeUTF(String.valueOf(ChatComponentSerializer.serialize(chatComponent)));
     }
 
     @Override
