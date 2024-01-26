@@ -1,9 +1,13 @@
 package dev.xernas.amethyst.network.util;
 
+import dev.xernas.amethyst.model.Identifier;
+import dev.xernas.amethyst.model.Types;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class MCByteBuf {
@@ -98,6 +102,40 @@ public class MCByteBuf {
         long leastSign = uuid.getLeastSignificantBits();
         byteBuf.writeLong(mostSign);
         byteBuf.writeLong(leastSign);
+    }
+
+    public Identifier readIdentifier() throws IOException {
+        return Identifier.fromString(readString());
+    }
+
+    public void writeIdentifier(Identifier identifier) throws IOException {
+        writeString(identifier.toString());
+    }
+
+    public <E> List<E> readList(Types type) throws IOException {
+        int len = readVarInt();
+        List<E> list = new ArrayList<>();
+        for (int i = 0; i < len; i++) {
+            if (type.equals(Types.STRING)) {
+                list.add((E) readString());
+            }
+            if (type.equals(Types.IDENTIFIER)) {
+                list.add((E) readIdentifier());
+            }
+        }
+        return list;
+    }
+
+    public <E> void writeList(List<E> list, Types type) throws IOException {
+        writeVarInt(list.size());
+        for (E e : list) {
+            if (type.equals(Types.STRING)) {
+                writeString((String) e);
+            }
+            if (type.equals(Types.IDENTIFIER)) {
+                writeIdentifier((Identifier) e);
+            }
+        }
     }
 
 }

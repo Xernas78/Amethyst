@@ -18,7 +18,7 @@ public class StatusPacket implements IPacket {
     public void write(MCByteBuf byteBuf) throws IOException {
         JsonObject object = new JsonObject();
         JsonObject version = new JsonObject();
-        version.addProperty("name", "1.20.2");
+        version.addProperty("name", "Xernas");
         version.addProperty("protocol", 764);
         JsonObject players = new JsonObject();
         players.addProperty("max", 10);

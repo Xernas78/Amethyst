@@ -9,6 +9,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 
 public class Server {
 
@@ -28,9 +29,11 @@ public class Server {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            NetworkManager manager = new NetworkManager();
+                            socketChannel.pipeline().addLast("keepalive", new IdleStateHandler(20, 15, 0));
                             socketChannel.pipeline().addLast("length", new PacketLength());
-                            socketChannel.pipeline().addLast("codec", new PacketCodec());
-                            socketChannel.pipeline().addLast("handler", new PacketInHandler());
+                            socketChannel.pipeline().addLast("codec", new PacketCodec(manager));
+                            socketChannel.pipeline().addLast("handler", new PacketInHandler(manager));
                         }
                     })
                     .childOption(ChannelOption.TCP_NODELAY, true)
